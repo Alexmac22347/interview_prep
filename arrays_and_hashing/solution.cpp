@@ -2,24 +2,24 @@
 #include <iostream>
 #include <string>
 #include <set>
+#include <algorithm>
 #include <unordered_map>
 #include <cmath>
 
 #include "solution.h"
 
 void Solution::runTests() {
-    std::vector<int> nums1{3,4,5,6};
-    int target1 = 7;
+    std::vector<std::string> anagrams = {"act", "cat", "tops", "stop", "hat", "cat", "pots"};
 
-    std::vector<int> nums2{4,5,6};
-    int target2 = 10;
+    auto a = groupAnagrams(anagrams);
 
-    std::vector<int> nums3{5,5};
-    int target3 = 10;
-
-    auto a = twoSum(nums1, target1);
-    auto b = twoSum(nums2, target2);
-    auto c = twoSum(nums3, target3);
+    for (auto anagram_list : a) {
+        std::cout << "group:" << std::endl;
+        for (auto s : anagram_list) {
+            std::cout << s << ", ";
+        }
+        std::cout << std::endl;
+    }
 }
 
 bool Solution::hasDuplicate(std::vector<int>& nums) {
@@ -38,32 +38,20 @@ bool Solution::isAnagram(std::string s, std::string t) {
     if (s.length() != t.length()) {
         return false;
     }
+    
+    int s_count[26] = {0};
+    int t_count[26] = {0};
 
-    std::unordered_map<char, int> s_map;
-    std::unordered_map<char, int> t_map;
     for (unsigned int i = 0; i < s.length(); i++) {
-        if (s_map.find(s.at(i)) == s_map.end()) {
-            s_map.insert({s.at(i), 0});
-        }
-        else {
-            s_map[s.at(i)] = s_map[s.at(i)] + 1;
-        }
-        if (t_map.find(t.at(i)) == t_map.end()) {
-            t_map.insert({t.at(i), 0});
-        }
-        else {
-            t_map[s.at(i)] = t_map[s.at(i)] + 1;
-        }
+        s_count[s[i] - 'a']++;
+        t_count[t[i] - 'a']++;
     }
 
-    for (auto it : s_map) {
-        if (t_map.find(it.first) == t_map.end()) {
-            return false;
-        } else if (t_map[it.first] != it.second) {
+    for (unsigned int i = 0; i < 26; i++) {
+        if (s_count[i] != t_count[i]) {
             return false;
         }
     }
-
     return true;
 }
 
@@ -79,4 +67,24 @@ std::vector<unsigned int> Solution::twoSum(std::vector<int>& nums, int target) {
         }
     }
     return std::vector<unsigned int>{};
+}
+
+std::vector<
+    std::vector<
+        std::string>> Solution::groupAnagrams(std::vector<std::string>& strs) {
+    std::vector<std::vector<std::string>> retval;
+    // anagram "id" (sorted anagram) to list of matching anagrams
+    std::unordered_map<std::string, std::vector<std::string>> anagrams;
+
+    for (std::string& str : strs) {
+       std::string id = std::string(str);
+       std::sort(id.begin(), id.end());
+       anagrams[id].push_back(str);
+    }
+
+    for (auto it : anagrams) {
+        retval.push_back(it.second);
+    }
+
+    return retval;
 }
