@@ -10,11 +10,10 @@
 #include "solution.h"
 
 void Solution::runTests() {
-    //std::vector<std::string> message{};
-    std::vector<std::string> message{"\\"};
+    //std::vector<std::string> message{""};
     //std::vector<std::string> message{",,"};
     //std::vector<std::string> message{"hi"};
-    //std::vector<std::string> message{",test","message,",",,,,"};
+    std::vector<std::string> message{",test","message,",",,,,"};
     //std::vector<std::string> message{"mge,",",,,,"};
 
     std::string encoded = encode(message);
@@ -142,7 +141,11 @@ std::string Solution::encode(std::vector<std::string>& strs) {
             }
             ss << c;
         }
-        ss << ENCODE_SEPARATOR;
+
+        // do not add a comma after the last string
+        if (i != strs.size()-1) {
+            ss << ENCODE_SEPARATOR;
+        }
     }
 
     return ss.str();
@@ -150,15 +153,17 @@ std::string Solution::encode(std::vector<std::string>& strs) {
 
 std::vector<std::string> Solution::decode(std::string s) {
     std::vector<std::string> retval;
+    if (s == "") {
+        retval.push_back("");
+        return retval;
+    }
     std::ostringstream ss;
     
     for (unsigned int i = 0; i <= s.size(); ) {
         if (i == s.size() \
                 // edge case where s is completely empty
                 && s.size() > 0) {
-            // ENCODE_SEPARATOR is used to mark
-            // the end of each string in the array,
-            // including the last
+            retval.push_back(ss.str());
             break;
         }
         if  (s[i] == ENCODE_ESCAPE \
