@@ -13,20 +13,11 @@
 #include "solution.h"
 
 void Solution::runTests() {
-    //std::vector<std::string> message{""};
-    //std::vector<std::string> message{};
-    //std::vector<std::string> message{",,"};
-    //std::vector<std::string> message{"hi"};
-    std::vector<std::string> message{"####","message,",",,,,"};
-    //std::vector<std::string> message{"mge,",",,,,"};
+    std::vector<int> nums{1,2,4,6};
 
-    std::string encoded = encode(message);
-    std::cout << "encoded: " << encoded << std::endl;
-
-    std::vector<std::string> decoded = decode(encoded);
-    std::cout << "decoded message:" << std::endl;
-    for (std::string& s : decoded) {
-        std::cout << s << std::endl;
+    std::vector<int> sol = productExceptSelf(nums);
+    for (int i : sol) {
+        std::cout << i << std::endl;
     }
 }
 
@@ -165,6 +156,38 @@ std::vector<std::string> Solution::decode(std::string s) {
                 std::cout << "whoops" << std::endl;
                 exit(-1);
             }
+        }
+    }
+
+    return retval;
+}
+
+std::vector<int> Solution::productExceptSelf(std::vector<int>& nums) {
+    std::vector<int> retval;
+    if (nums.size() == 0) {
+        return retval;
+    }
+
+    std::vector<int> prefix(nums.size());
+    std::vector<int> suffix(nums.size());
+
+    prefix[0] = nums[0];
+    suffix[nums.size()-1] = nums[nums.size()-1];
+
+    for (unsigned int i = 1; i < nums.size(); i++) {
+        prefix[i] = prefix[i-1]*nums[i];
+    }
+    for (int i = nums.size()-2; i >= 0; i--) {
+        suffix[i] = nums[i]*suffix[i+1];
+    }
+
+    for (unsigned int i = 0; i < nums.size(); i++) {
+        if (i == 0) {
+            retval.push_back(suffix[i+1]);
+        } else if (i == nums.size()-1) {
+            retval.push_back(prefix[i-1]);
+        } else {
+            retval.push_back(prefix[i-1]*suffix[i+1]);
         }
     }
 

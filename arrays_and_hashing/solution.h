@@ -15,4 +15,5 @@ class Solution {
         std::vector<int> topKFrequent(std::vector<int>& nums, int k);
         std::string encode(std::vector<std::string>& strs);
         std::vector<std::string> decode(std::string s);
+        std::vector<int> productExceptSelf(std::vector<int>& sums);
 };
