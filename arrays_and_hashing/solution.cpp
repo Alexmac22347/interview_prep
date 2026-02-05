@@ -6,14 +6,18 @@
 #include <algorithm>
 #include <unordered_map>
 #include <cmath>
+#include <string_view>
+#include <cctype>
+#include <utility>
 
 #include "solution.h"
 
 void Solution::runTests() {
     //std::vector<std::string> message{""};
+    //std::vector<std::string> message{};
     //std::vector<std::string> message{",,"};
     //std::vector<std::string> message{"hi"};
-    std::vector<std::string> message{",test","message,",",,,,"};
+    std::vector<std::string> message{"####","message,",",,,,"};
     //std::vector<std::string> message{"mge,",",,,,"};
 
     std::string encoded = encode(message);
@@ -127,24 +131,13 @@ std::vector<int> Solution::topKFrequent(std::vector<int>& nums, int k) {
 }
 
 std::string Solution::encode(std::vector<std::string>& strs) {
-    if (strs.size() == 0) {
-        return "";
-    }
-    // use ENCODE_SEPARATOR to separate strings.
-    // if ENCODE_SEPARATOR appears in strs, prepend
-    // escape character 
+    // prepend each string with [str_len]ENCODE_START
+    // if ENCODE_START is in the string, escape it
     std::ostringstream ss;
-    for (unsigned int i = 0; i < strs.size(); i++) {
-        for (char c : strs[i]) {
-            if (c == ENCODE_SEPARATOR) {
-                ss << ENCODE_ESCAPE;
-            }
+    for (std::string& str : strs) {
+        ss << str.length() << ENCODE_START;
+        for (char c : str) {
             ss << c;
-        }
-
-        // do not add a comma after the last string
-        if (i != strs.size()-1) {
-            ss << ENCODE_SEPARATOR;
         }
     }
 
@@ -153,32 +146,25 @@ std::string Solution::encode(std::vector<std::string>& strs) {
 
 std::vector<std::string> Solution::decode(std::string s) {
     std::vector<std::string> retval;
-    if (s == "") {
-        retval.push_back("");
-        return retval;
-    }
-    std::ostringstream ss;
-    
-    for (unsigned int i = 0; i <= s.size(); ) {
-        if (i == s.size() \
-                // edge case where s is completely empty
-                && s.size() > 0) {
-            retval.push_back(ss.str());
-            break;
-        }
-        if  (s[i] == ENCODE_ESCAPE \
-                && i+1 < s.size() \
-                && s[i+1] == ENCODE_SEPARATOR) {
-            ss << ENCODE_SEPARATOR;
-            i+=2;
-        } else if (s[i] == ENCODE_SEPARATOR) {
-            retval.push_back(ss.str());
-            ss.str("");
-            ss.clear();
-            i++;
+
+    std::ostringstream num_ss;
+    for (unsigned int i = 0; i < s.length(); i++) {
+        if (std::isdigit(s[i])) {
+            num_ss << s[i];
         } else {
-            ss << s[i];
-            i++;
+            int str_len = std::stoi(num_ss.str());
+            try {
+                std::string substr = s.substr(i+1, str_len);
+                retval.push_back(std::move(substr));
+                num_ss.str("");
+                num_ss.clear();
+                i += str_len;
+            } catch (...) {
+                // this is for neetcode
+                // i don't care about error handling muahahah
+                std::cout << "whoops" << std::endl;
+                exit(-1);
+            }
         }
     }
 

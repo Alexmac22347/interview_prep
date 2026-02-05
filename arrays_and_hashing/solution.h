@@ -6,8 +6,7 @@ class Solution {
         void runTests();
 
     private:
-        static const char ENCODE_SEPARATOR = ',';
-        static const char ENCODE_ESCAPE = '\\';
+        static const char ENCODE_START = '#';
 
         bool hasDuplicate(std::vector<int>& nums);
         bool isAnagram(std::string s, std::string t);
