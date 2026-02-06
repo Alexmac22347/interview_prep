@@ -7,6 +7,8 @@ class Solution {
 
     private:
         static const char ENCODE_START = '#';
+        static const unsigned int SUDOKU_BOARD_SIZE = 3;
+        static const char SUDOKU_EMPTY_TILE_MARKER = '.';
 
         bool hasDuplicate(std::vector<int>& nums);
         bool isAnagram(std::string s, std::string t);
@@ -16,4 +18,5 @@ class Solution {
         std::string encode(std::vector<std::string>& strs);
         std::vector<std::string> decode(std::string s);
         std::vector<int> productExceptSelf(std::vector<int>& sums);
+        bool isValidSudoku(std::vector<std::vector<char>>& board);
 };

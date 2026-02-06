@@ -13,12 +13,19 @@
 #include "solution.h"
 
 void Solution::runTests() {
-    std::vector<int> nums{1,2,4,6};
+    std::vector<std::vector<char>> board
+        {{'1','2','.','.','3','.','.','.','.'},
+         {'4','.','.','5','.','.','.','.','.'},
+         {'.','9','1','.','.','.','.','.','3'},
+         {'5','.','.','.','6','.','.','.','4'},
+         {'.','.','.','8','.','3','.','.','5'},
+         {'7','.','.','.','2','.','.','.','6'},
+         {'.','.','.','.','.','.','2','.','.'},
+         {'.','.','.','4','1','9','.','.','8'},
+         {'.','.','.','.','8','.','.','7','9'}};
 
-    std::vector<int> sol = productExceptSelf(nums);
-    for (int i : sol) {
-        std::cout << i << std::endl;
-    }
+    bool isValid = isValidSudoku(board);
+    std::cout << "isValidSudoku: " << isValid << std::endl;
 }
 
 bool Solution::hasDuplicate(std::vector<int>& nums) {
@@ -37,7 +44,7 @@ bool Solution::isAnagram(std::string s, std::string t) {
     if (s.length() != t.length()) {
         return false;
     }
-    
+
     int s_count[26] = {0};
     int t_count[26] = {0};
 
@@ -192,4 +199,73 @@ std::vector<int> Solution::productExceptSelf(std::vector<int>& nums) {
     }
 
     return retval;
+}
+
+bool Solution::isValidSudoku(std::vector<std::vector<char>>& board) {
+    /*
+     * Not sure if its the optimal solution, but im going to use a "hashmap"
+     * ie a list of 10 bools to keep track of which numbers we've seen.
+     * a number just hashes to itself, ie the number is the index in the array.
+     * I'll loop through each row. Then loop through each column. Then through
+     * each 3x3 box.
+     * I wonder if theres a way I can combine certain checks. Because I am looking
+     * at each tile 3 times (once checking the rows, then columns, then boxes).
+     * I mean 3 is a constant though so it doesnt matter much.
+     */
+    bool seen_numbers[10] = {false};
+
+    // for each row, check for dups
+    for (unsigned int i = 0; i < board.size(); i++) {
+        for (unsigned int j = 0; j < board[i].size(); j++) {
+            char board_char = board[i][j];
+            if (board_char == SUDOKU_EMPTY_TILE_MARKER) {
+                continue;
+            }
+            unsigned int board_num = board_char - '0';
+            if (seen_numbers[board_num]) {
+                return false;
+            }
+            seen_numbers[board_num] = true;
+        }
+        std::fill(std::begin(seen_numbers), std::end(seen_numbers), false);
+    }
+
+    // for each column, check for dups
+    for (unsigned int i = 0; i < board.size(); i++) {
+        for (unsigned int j = 0; j < board[i].size(); j++) {
+            char board_char = board[j][i];
+            if (board_char == SUDOKU_EMPTY_TILE_MARKER) {
+                continue;
+            }
+            unsigned int board_num = board_char - '0';
+            if (seen_numbers[board_num]) {
+                return false;
+            }
+            seen_numbers[board_num] = true;
+        }
+        std::fill(std::begin(seen_numbers), std::end(seen_numbers), false);
+    }
+
+    // for each box, check for dups
+    // loop through each box
+    for (unsigned int i = 0; i < board.size(); i += SUDOKU_BOARD_SIZE) {
+        for (unsigned int j = 0; j < board[i].size(); j += SUDOKU_BOARD_SIZE) {
+            // loop inside the box
+            for (unsigned int b_i = i; b_i < i+SUDOKU_BOARD_SIZE; b_i++) {
+                for (unsigned int b_j = j; b_j < j+SUDOKU_BOARD_SIZE; b_j++) {
+                    char board_char = board[b_i][b_j];
+                    if (board_char == SUDOKU_EMPTY_TILE_MARKER) {
+                        continue;
+                    }
+                    unsigned int board_num = board_char - '0';
+                    if (seen_numbers[board_num]) {
+                        return false;
+                    }
+                    seen_numbers[board_num] = true;
+                }
+            }
+            std::fill(std::begin(seen_numbers), std::end(seen_numbers), false);
+        }
+    }
+    return true;
 }
