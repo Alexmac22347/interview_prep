@@ -19,4 +19,5 @@ class Solution {
         std::vector<std::string> decode(std::string s);
         std::vector<int> productExceptSelf(std::vector<int>& sums);
         bool isValidSudoku(std::vector<std::vector<char>>& board);
+        int longestConsecutive(std::vector<int>& nums);
 };

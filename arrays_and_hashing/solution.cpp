@@ -13,19 +13,10 @@
 #include "solution.h"
 
 void Solution::runTests() {
-    std::vector<std::vector<char>> board
-        {{'1','2','.','.','3','.','.','.','.'},
-         {'4','.','.','5','.','.','.','.','.'},
-         {'.','9','1','.','.','.','.','.','3'},
-         {'5','.','.','.','6','.','.','.','4'},
-         {'.','.','.','8','.','3','.','.','5'},
-         {'7','.','.','.','2','.','.','.','6'},
-         {'.','.','.','.','.','.','2','.','.'},
-         {'.','.','.','4','1','9','.','.','8'},
-         {'.','.','.','.','8','.','.','7','9'}};
+    std::vector<int> nums{2,20,4,10,3,4,5};
 
-    bool isValid = isValidSudoku(board);
-    std::cout << "isValidSudoku: " << isValid << std::endl;
+    int longestSeq = longestConsecutive(nums);
+    std::cout << "longestSeq: " << longestSeq << std::endl;
 }
 
 bool Solution::hasDuplicate(std::vector<int>& nums) {
@@ -268,4 +259,34 @@ bool Solution::isValidSudoku(std::vector<std::vector<char>>& board) {
         }
     }
     return true;
+}
+
+int Solution::longestConsecutive(std::vector<int>& nums) {
+    // this holds any ints that are the start of a sequence
+    // and the length of said sequence
+    std::unordered_map<int, int> starts;
+    // nums in a set for constant lookup.
+    std::set<int> nums_set(nums.begin(), nums.end());
+    for (unsigned int i = 0; i < nums.size(); i++) {
+        if (nums_set.find(nums[i]-1) == nums_set.end()) {
+            // if this is a start of a sequence, lets find out
+            // how long it is.
+            starts[nums[i]] = 1;
+            int j = nums[i] + 1;
+            while(nums_set.find(j) != nums_set.end()) {
+                j++;
+                starts[nums[i]] += 1;
+            }
+        } else {
+            continue;
+        }
+    }
+
+    int max_seq_length = 0;
+    for (auto seq : starts) {
+        if (seq.second > max_seq_length) {
+            max_seq_length = seq.second;
+        }
+    }
+    return max_seq_length;
 }
