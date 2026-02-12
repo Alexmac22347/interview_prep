@@ -1,7 +1,7 @@
 #include <iostream>
-#include "arrays_and_hashing/solution.h"
+#include "stack/stack.h"
 
 int main() {
-    Solution s;
+    Stack s;
     s.runTests();
 }

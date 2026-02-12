@@ -10,16 +10,16 @@
 #include <cctype>
 #include <utility>
 
-#include "solution.h"
+#include "arrays_and_hashing.h"
 
-void Solution::runTests() {
+void ArraysAndHashing::runTests() {
     std::vector<int> nums{2,20,4,10,3,4,5};
 
     int longestSeq = longestConsecutive(nums);
     std::cout << "longestSeq: " << longestSeq << std::endl;
 }
 
-bool Solution::hasDuplicate(std::vector<int>& nums) {
+bool ArraysAndHashing::hasDuplicate(std::vector<int>& nums) {
     std::set<int> s;
     for (int& num : nums) {
         if (s.find(num) == s.end()){
@@ -31,7 +31,7 @@ bool Solution::hasDuplicate(std::vector<int>& nums) {
     return false;
 }
 
-bool Solution::isAnagram(std::string s, std::string t) {
+bool ArraysAndHashing::isAnagram(std::string s, std::string t) {
     if (s.length() != t.length()) {
         return false;
     }
@@ -52,7 +52,7 @@ bool Solution::isAnagram(std::string s, std::string t) {
     return true;
 }
 
-std::vector<unsigned int> Solution::twoSum(std::vector<int>& nums, int target) {
+std::vector<unsigned int> ArraysAndHashing::twoSum(std::vector<int>& nums, int target) {
     std::unordered_map<int, unsigned int> m;
     for (unsigned int i = 0; i < nums.size(); i++) {
         int diff = target - nums[i];
@@ -68,7 +68,7 @@ std::vector<unsigned int> Solution::twoSum(std::vector<int>& nums, int target) {
 
 std::vector<
     std::vector<
-        std::string>> Solution::groupAnagrams(std::vector<std::string>& strs) {
+        std::string>> ArraysAndHashing::groupAnagrams(std::vector<std::string>& strs) {
     std::vector<std::vector<std::string>> retval;
     // anagram "id" (sorted anagram) to list of matching anagrams
     std::unordered_map<std::string, std::vector<std::string>> anagrams;
@@ -86,7 +86,7 @@ std::vector<
     return retval;
 }
 
-std::vector<int> Solution::topKFrequent(std::vector<int>& nums, int k) {
+std::vector<int> ArraysAndHashing::topKFrequent(std::vector<int>& nums, int k) {
     std::unordered_map<int, int> counts;
 
     for (int& num : nums) {
@@ -119,7 +119,7 @@ std::vector<int> Solution::topKFrequent(std::vector<int>& nums, int k) {
     return retval;
 }
 
-std::string Solution::encode(std::vector<std::string>& strs) {
+std::string ArraysAndHashing::encode(std::vector<std::string>& strs) {
     // prepend each string with [str_len]ENCODE_START
     // if ENCODE_START is in the string, escape it
     std::ostringstream ss;
@@ -133,7 +133,7 @@ std::string Solution::encode(std::vector<std::string>& strs) {
     return ss.str();
 }
 
-std::vector<std::string> Solution::decode(std::string s) {
+std::vector<std::string> ArraysAndHashing::decode(std::string s) {
     std::vector<std::string> retval;
 
     std::ostringstream num_ss;
@@ -160,7 +160,7 @@ std::vector<std::string> Solution::decode(std::string s) {
     return retval;
 }
 
-std::vector<int> Solution::productExceptSelf(std::vector<int>& nums) {
+std::vector<int> ArraysAndHashing::productExceptSelf(std::vector<int>& nums) {
     std::vector<int> retval;
     if (nums.size() == 0) {
         return retval;
@@ -192,7 +192,7 @@ std::vector<int> Solution::productExceptSelf(std::vector<int>& nums) {
     return retval;
 }
 
-bool Solution::isValidSudoku(std::vector<std::vector<char>>& board) {
+bool ArraysAndHashing::isValidSudoku(std::vector<std::vector<char>>& board) {
     /*
      * Not sure if its the optimal solution, but im going to use a "hashmap"
      * ie a list of 10 bools to keep track of which numbers we've seen.
@@ -261,7 +261,7 @@ bool Solution::isValidSudoku(std::vector<std::vector<char>>& board) {
     return true;
 }
 
-int Solution::longestConsecutive(std::vector<int>& nums) {
+int ArraysAndHashing::longestConsecutive(std::vector<int>& nums) {
     // this holds any ints that are the start of a sequence
     // and the length of said sequence
     std::unordered_map<int, int> starts;

@@ -1,7 +1,7 @@
 #include <vector>
 #include <string>
 
-class Solution {
+class ArraysAndHashing {
     public:
         void runTests();
 
