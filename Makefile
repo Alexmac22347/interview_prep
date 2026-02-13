@@ -1,8 +1,8 @@
 output_folder = bin
 CXXFLAGS = -g -Wall -Wextra -std=c++20
 
-run : main.o arrays_and_hashing.o stack.o
-	$(CXX) $(CXXFLAGS) -o bin/out $(output_folder)/main.o $(output_folder)/arrays_and_hashing.o $(output_folder)/stack.o
+run : main.o arrays_and_hashing.o stack.o minstack.o
+	$(CXX) $(CXXFLAGS) -o bin/out $(output_folder)/main.o $(output_folder)/arrays_and_hashing.o $(output_folder)/stack.o $(output_folder)/minstack.o
 
 main.o : main.cpp
 	$(CXX) $(CXXFLAGS) -c main.cpp -o $(output_folder)/main.o
@@ -12,6 +12,9 @@ arrays_and_hashing.o : arrays_and_hashing/arrays_and_hashing.cpp
 
 stack.o : stack/stack.cpp
 	$(CXX) $(CXXFLAGS) -c ./stack/stack.cpp -o $(output_folder)/stack.o
+
+minstack.o : stack/minstack.cpp
+	$(CXX) $(CXXFLAGS) -c ./stack/minstack.cpp -o $(output_folder)/minstack.o
 
 clean :
 	rm bin/*

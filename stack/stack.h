@@ -1,4 +1,5 @@
 #include <string>
+#include <vector>
 
 class Stack {
     public:
@@ -6,4 +7,6 @@ class Stack {
 
     private:
         bool validParentheses(std::string s);
+        bool minStack(std::string s);
+        int evalRPN(std::vector<std::string>& tokens);
 };

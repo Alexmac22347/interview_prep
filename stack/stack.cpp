@@ -1,8 +1,10 @@
 #include <string>
 #include <iostream>
 #include <stack>
+#include <algorithm>
 
 #include "stack.h"
+#include "minstack.h"
 
 static const char OPEN_PAR = '(';
 static const char CLOSE_PAR = ')';
@@ -12,17 +14,8 @@ static const char OPEN_SQIGGLE = '{';
 static const char CLOSE_SQIGGLE = '}';
 
 void Stack::runTests() {
-    std::string test_str1{"[[]]"};
-    std::string test_str2{"[(]]"};
-    std::string test_str3{"]"};
-    std::string test_str4{"()()"};
-    std::string test_str5{"()[()"};
-
-    std::cout << test_str1 << ": " << validParentheses(test_str1) << std::endl;
-    std::cout << test_str2 << ": " << validParentheses(test_str2) << std::endl;
-    std::cout << test_str3 << ": " << validParentheses(test_str3) << std::endl;
-    std::cout << test_str4 << ": " << validParentheses(test_str4) << std::endl;
-    std::cout << test_str5 << ": " << validParentheses(test_str5) << std::endl;
+    std::vector<std::string> tokens = {"10","6","9","3","+","-11","*","/","*","17","+","5","+"};
+    std::cout << evalRPN(tokens) << std::endl;
 }
 
 bool Stack::validParentheses(std::string s) {
@@ -61,4 +54,44 @@ bool Stack::validParentheses(std::string s) {
         return true;
     }
     return false;
+}
+
+int Stack::evalRPN(std::vector<std::string>& tokens) {
+    std::stack<int> s;
+    for (unsigned int i = 0; i < tokens.size(); i++) {
+        std::string token = tokens[i];
+
+        if (token == "+") {
+            int x = s.top();
+            s.pop();
+            int y = s.top();
+            s.pop();
+            s.push(x+y);
+        } else if (token == "-") {
+            int x = s.top();
+            s.pop();
+            int y = s.top();
+            s.pop();
+            s.push(y-x);
+        } else if (token == "/") {
+            int x = s.top();
+            s.pop();
+            int y = s.top();
+            s.pop();
+            s.push(y/x);
+        } else if (token == "*") {
+            int x = s.top();
+            s.pop();
+            int y = s.top();
+            s.pop();
+            s.push(y*x);
+        } else {
+            s.push(std::stoi(token));
+        }
+    }
+
+    if (s.size() != 1) {
+        // uh oh
+    }
+    return s.top();;
 }
