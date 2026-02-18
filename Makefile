@@ -1,5 +1,5 @@
 output_folder = bin
-CXXFLAGS = -g -Wall -Wextra -std=c++20
+CXXFLAGS = -g -Wall -O0 -Wextra -std=c++20
 
 run : main.o arrays_and_hashing.o stack.o minstack.o
 	$(CXX) $(CXXFLAGS) -o bin/out $(output_folder)/main.o $(output_folder)/arrays_and_hashing.o $(output_folder)/stack.o $(output_folder)/minstack.o
