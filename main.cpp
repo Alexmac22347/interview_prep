@@ -1,7 +1,7 @@
 #include <iostream>
-#include "stack/stack.h"
+#include "two_pointers/two_pointers.h"
 
 int main() {
-    Stack s;
-    s.runTests();
+    TwoPointers t;
+    t.runTests();
 }

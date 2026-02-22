@@ -1,0 +1,87 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-O0",
+      "-Wextra",
+      "-std=c++20",
+      "-c",
+      "-o",
+      "bin/main.o",
+      "main.cpp"
+    ],
+    "directory": "/home/alex/Documents/interview_prep",
+    "file": "/home/alex/Documents/interview_prep/main.cpp",
+    "output": "/home/alex/Documents/interview_prep/bin/main.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-O0",
+      "-Wextra",
+      "-std=c++20",
+      "-c",
+      "-o",
+      "bin/arrays_and_hashing.o",
+      "./arrays_and_hashing/arrays_and_hashing.cpp"
+    ],
+    "directory": "/home/alex/Documents/interview_prep",
+    "file": "/home/alex/Documents/interview_prep/arrays_and_hashing/arrays_and_hashing.cpp",
+    "output": "/home/alex/Documents/interview_prep/bin/arrays_and_hashing.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-O0",
+      "-Wextra",
+      "-std=c++20",
+      "-c",
+      "-o",
+      "bin/stack.o",
+      "./stack/stack.cpp"
+    ],
+    "directory": "/home/alex/Documents/interview_prep",
+    "file": "/home/alex/Documents/interview_prep/stack/stack.cpp",
+    "output": "/home/alex/Documents/interview_prep/bin/stack.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-O0",
+      "-Wextra",
+      "-std=c++20",
+      "-c",
+      "-o",
+      "bin/minstack.o",
+      "./stack/minstack.cpp"
+    ],
+    "directory": "/home/alex/Documents/interview_prep",
+    "file": "/home/alex/Documents/interview_prep/stack/minstack.cpp",
+    "output": "/home/alex/Documents/interview_prep/bin/minstack.o"
+  },
+  {
+    "arguments": [
+      "/usr/bin/g++",
+      "-g",
+      "-Wall",
+      "-O0",
+      "-Wextra",
+      "-std=c++20",
+      "-c",
+      "-o",
+      "bin/two_pointers.o",
+      "./two_pointers/two_pointers.cpp"
+    ],
+    "directory": "/home/alex/Documents/interview_prep",
+    "file": "/home/alex/Documents/interview_prep/two_pointers/two_pointers.cpp",
+    "output": "/home/alex/Documents/interview_prep/bin/two_pointers.o"
+  }
+]
