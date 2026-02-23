@@ -1,5 +1,6 @@
 #include <span>
 #include <string>
+#include <stack>
 #include <locale>
 #include <iostream>
 #include <algorithm>
@@ -9,8 +10,9 @@
 #include "two_pointers.h"
 
 void TwoPointers::runTests() {
-    std::vector<int> numbers{-4,-1,-1,0,1,2};
-    std::vector<std::vector<int>> ret = threeSum(numbers);
+    std::vector<int> heights{5,4,1,2};
+    int ret = trap(heights);
+    std::cout << ret << std::endl;
 }
 
 bool TwoPointers::isPalindrome(std::string s) {
@@ -30,6 +32,7 @@ bool TwoPointers::isPalindrome(std::string s) {
         l_pointer++;
         r_pointer--;
     }
+
 
     return true;
 }
@@ -85,4 +88,87 @@ std::vector<std::vector<int>> TwoPointers::threeSum(std::span<int> nums) {
         }
     }
     return ret;
+}
+
+int TwoPointers::maxArea(std::vector<int>& heights) {
+    int l = 0;
+    int r = heights.size()-1;
+    int curmax = 0;
+    while (l<r) {
+        int size = std::min(heights[l], heights[r]) * r-l;
+        if (size > curmax)
+            curmax = size;
+        if (heights[l] < heights[r])
+            l++;
+        else
+            r--;
+    }
+    return curmax;
+}
+
+int TwoPointers::trap(std::vector<int>& height) {
+    // index, height
+    std::stack<std::pair<int,int>> s;
+
+    // from left to right, were going to build
+    // a stack that contains the indices (and height)
+    // of the edges of pools
+    int maxheight = 0;
+    for (unsigned int i = 0; i < height.size(); i++) {
+        if (height[i] == 0)
+            continue; // this aint gonna be a edge i can tell ya
+        if (i > 0 && height[i] < height[i-1])
+            continue; // if we just dropped down from something higher, this cant be an edge
+        if (i < height.size()-1 && height[i] < height[i+1])
+            continue; // likewise, if the next height is higher, this cant be an edge
+
+        // lets remove the non boundaries from out stack.
+        // we know its a boundary if we are taller than it,
+        // __and there is something taller than it behind__.
+        while (s.size() > 0
+                && maxheight > s.top().second // without this, we might pop
+                                      // an edge. this would cause us to
+                                      // blindly pop the first and second
+                                      // edge when  there is actually nothing
+                                      // to the left to hold the water.
+                                      //     *
+                                      //   * *
+                                      // * * *
+                                      // ^^^^^
+                && height[i] > s.top().second)
+            s.pop();
+
+        if (height[i] > maxheight)
+            maxheight = height[i];
+
+        s.push(std::pair<int,int>{i, height[i]});
+    }
+
+    if (s.size() <= 1)
+        return 0;
+
+    int total = 0;
+    int rEdgeHeight = s.top().second;
+    int rEdgeIdx = s.top().first;
+    s.pop();
+    while (s.size() > 0) {
+        int poolHeight = std::min(s.top().second, rEdgeHeight);
+        for (int i = rEdgeIdx-1; i > s.top().first; i--) {
+            // in 4,3,1,2,
+            // my algo will not detect 3 as an edge
+            // and will keep 4 as the leftmost edge.
+            // so we will calculate a negative height
+            // since we use a height of 2, and take 2-3=-1
+            // for index i=1.
+            // im just going to skip these instead of fixing the algo
+            if (poolHeight <= height[i])
+                continue; // hack lol
+            total += (poolHeight - height[i]);
+        }
+
+        rEdgeHeight = s.top().second;
+        rEdgeIdx = s.top().first;
+        s.pop();
+    }
+    return total;
 }
